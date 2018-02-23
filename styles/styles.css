@@ -2,8 +2,23 @@ body {
     font-family: "Gotham 4r", Arial, sans-serif;
     font-size: 16px;
 }
-.category-component {
-    width: 80%
+header {
+    background: url("../images/header.png") center no-repeat;
+    height: 234px;
+    margin-bottom: 20px;
+    text-indent: -2000px;
+}
+aside {
+    background: url("../images/left-nav.png") no-repeat;
+}
+aside nav {
+    text-indent: -2000px;
+}
+footer {
+    background: url("../images/footer.png") center no-repeat;
+    height: 1078px;
+    margin: 20px 0;
+    text-indent: -2000px;
 }
 .category-image {
     background-size: cover;
@@ -45,4 +60,9 @@ body {
     font-weight: bold;
     line-height: normal;
     display: inline-block;
+}
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1000px;
+    }
 }
