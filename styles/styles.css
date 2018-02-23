@@ -1,1 +1,48 @@
-
+body {
+    font-family: "Gotham 4r", Arial, sans-serif;
+    font-size: 16px;
+}
+.category-component {
+    width: 80%
+}
+.category-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 220px;
+    width: 220px;
+}
+.quicklook {
+    color: #006167;
+    display: block;
+    font-size: .9em;
+    margin: 10px 0;
+    text-decoration: underline;
+}
+.quicklook:hover,
+.quicklook:focus {
+    color: #866347;
+    border-color: #866347;
+}
+.desc {
+    font-size: .9em;
+    text-transform: none;
+    line-height: 23px;
+    color: #050708;
+    padding: 0;
+    text-align: left;
+    display: block;
+    float: none;
+    margin: 0 0 10px;
+    width: auto;
+}
+.pricing {
+    list-style-type: none;
+    padding-left: 0;
+}
+.pricing li {
+    font-size: .8em;
+    font-weight: bold;
+    line-height: normal;
+    display: inline-block;
+}
