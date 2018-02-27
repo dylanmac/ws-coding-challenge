@@ -51,6 +51,7 @@ footer {
     margin: 0 0 10px;
     width: auto;
 }
+.modal.quicklook .thumbnails,
 .pricing {
     list-style-type: none;
     padding-left: 0;
@@ -60,6 +61,15 @@ footer {
     font-weight: bold;
     line-height: normal;
     display: inline-block;
+}
+.modal.quicklook {
+    display: none;
+    max-width: 400px;
+}
+.modal.quicklook .thumbnails li {
+    display: inline-block;
+    max-height: 80px;
+    max-width: 80px;
 }
 @media (min-width: 1200px) {
     .container {
