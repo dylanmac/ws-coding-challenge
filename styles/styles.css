@@ -20,6 +20,9 @@ footer {
     margin: 20px 0;
     text-indent: -2000px;
 }
+.category-grid {
+    position: relative;
+}
 .category-image {
     background-size: cover;
     background-position: center;
@@ -51,7 +54,7 @@ footer {
     margin: 0 0 10px;
     width: auto;
 }
-.modal.quicklook .thumbnails,
+.quicklook-modal .thumbnails,
 .pricing {
     list-style-type: none;
     padding-left: 0;
@@ -62,15 +65,80 @@ footer {
     line-height: normal;
     display: inline-block;
 }
-.modal.quicklook {
+.quicklook-modal {
+    background-color: #fff;
+    border: 1px solid #000;
+    bottom: 12%;
     display: none;
-    max-width: 400px;
+    left: 0;
+    margin-left: -80px;
+    padding: 20px;
+    width: 380px;
+    position: relative;
+    z-index: 10;
 }
-.modal.quicklook .thumbnails li {
+.quicklook-modal.show {
+    display: block;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+.quicklook-modal .close-icon {
+    display: block;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+.quicklook-modal .main-image {
+    height: 340px;
+    width: 340px;
+}
+.quicklook-modal .thumbnails {
+    display: block;
+    height: 100px;
+    margin: 10px 0 0;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.quicklook-modal .thumbnails li {
+    background-size: cover;
     display: inline-block;
-    max-height: 80px;
-    max-width: 80px;
+    height: 80px;
+    margin-right: 5px;
+    width: 80px;
 }
+.quicklook-modal .thumbnails li:last-child {
+    margin-right: 0;
+}
+/*****
+    Add animation (fade in the popup)
+*****/
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+/*****
+    Bootstrap overrides
+*****/
+
+figure {
+    margin: 0 0 0;
+}
+/*****
+    Media queries
+*****/
+
 @media (min-width: 1200px) {
     .container {
         max-width: 1000px;

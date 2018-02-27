@@ -53,17 +53,19 @@ ws.ecom.product = {
                 newComponent.querySelector(".high").innerText = '$' + products[i].price.selling;
             }
             productRow.appendChild(newComponent);
-            ws.ecom.product.modal(newComponent, productImages);
+            ws.ecom.product.quicklook(newComponent, productImages);
 
         }
         productRow.removeChild(productRow.querySelector(".category-grid"));
     },
 
-    modal: function(component, images) {
+    quicklook: function(component, images) {
         var quicklook = component.querySelector(".quicklook");
-        quicklook.addEventListener('click', function() {
-            var modal = component.querySelector(".modal.quicklook"),
-                thumbnail = modal.querySelector(".carousel .thumbnails"),
+        var allModals = component.querySelectorAll(".quicklook-modal.show");
+        quicklook.addEventListener('click', function(e) {
+            e.preventDefault();
+            var modal = component.querySelector(".quicklook-modal"),
+                thumbnail = modal.querySelector(".product-images .thumbnails"),
                 thumbnails = thumbnail.querySelector("li");
             modal.querySelector('.main-image').style.backgroundImage = "url(" + images[0] + ")";
 
@@ -72,35 +74,22 @@ ws.ecom.product = {
                 li.style.backgroundImage = "url(" + images[j] + ")";
                 thumbnail.appendChild(li);
             }
+            modal.classList.toggle("show");
+            thumbnail.removeChild(thumbnail.querySelector("li"));
         });
     },
 
-    getThumbnails: function() {
-        var quicklooks = document.querySelectorAll(".category-component .quicklook");
-        for (j = 0; j < quicklooks.length; j++) {
-            var images = quicklooks[j].getAttribute('data-images');
-            //quicklooks[i].addEventListener('click', this.modal(images));
+    closeQuicklook: function() {
+        window.onclick = function(e) {
+            console.log(e.target);
+            if (e.target != modal) {
+                modal.classList.remove("show");
+            }
         }
-    },
-
-    quicklook: function() {
-        var quicklooks = document.querySelectorAll(".category-component .quicklook");
-        console.log(quicklooks.length);
-        for (i = 0; i < quicklooks.length; i++) {
-            var quicklook = quicklooks[i];
-            quicklook.onclick(function() {
-                console.log(this.parentNode.parentNode.nextSibling);
-                var newThumbnail = thumbnails.cloneNode(true);
-                modal.querySelector('.thumbnails li').style.backgroundImage = "url(" + images[i] + ")";
-            })
-        }
-
-
     },
 
     init: function() {
         ws.ecom.product.getJSONP('js/products.json');
-        //ws.ecom.product.quicklook();
     }
 
 }
