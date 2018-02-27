@@ -4,6 +4,11 @@ if (typeof ws === "undefined" || !ws) {
 
 ws.ecom = ws.ecom || {};
 
+var viewportModal = document.querySelector(".viewport-modal"),
+    thumbnail = viewportModal.querySelector(".product-images .thumbnails"),
+    closeButton = viewportModal.querySelector(".close-icon");
+
+
 ws.ecom.product = {
 
     getJSONP: function(url) {
@@ -61,35 +66,51 @@ ws.ecom.product = {
 
     quicklook: function(component, images) {
         var quicklook = component.querySelector(".quicklook");
-        var allModals = component.querySelectorAll(".quicklook-modal.show");
+
         quicklook.addEventListener('click', function(e) {
             e.preventDefault();
-            var modal = component.querySelector(".quicklook-modal"),
-                thumbnail = modal.querySelector(".product-images .thumbnails"),
-                thumbnails = thumbnail.querySelector("li");
-            modal.querySelector('.main-image').style.backgroundImage = "url(" + images[0] + ")";
+            while (thumbnail.childNodes.length > 1) {
+                thumbnail.removeChild(thumbnail.lastChild);
+            }
+            viewportModal.querySelector('.main-image').style.backgroundImage = "url(" + images[0] + ")";
 
             for (j = 0; j < images.length; j++) {
                 var li = document.createElement('li');
                 li.style.backgroundImage = "url(" + images[j] + ")";
                 thumbnail.appendChild(li);
             }
-            modal.classList.toggle("show");
-            thumbnail.removeChild(thumbnail.querySelector("li"));
+            ws.ecom.product.slideshow();
+            ws.ecom.product.toggleModal();
         });
     },
 
-    closeQuicklook: function() {
-        window.onclick = function(e) {
-            console.log(e.target);
-            if (e.target != modal) {
-                modal.classList.remove("show");
-            }
+    slideshow: function() {
+        var thumbnails = thumbnail.querySelectorAll('li');
+        for (k = 0; k < thumbnails.length; k++) {
+            thumbnails[k].addEventListener('click', function(e) {
+                var elem = e.target || e.srcElement;
+                var bgImg = elem.getAttribute('style');
+                viewportModal.querySelector('.main-image').style = bgImg;
+            })
+        }
+
+    },
+
+    toggleModal: function() {
+        viewportModal.classList.toggle('show-modal');
+    },
+
+    closeModalOnWindowClick: function(e) {
+        var viewportModal = document.querySelector(".viewport-modal");
+        if (e.target === viewportModal) {
+            ws.ecom.product.toggleModal();
         }
     },
 
     init: function() {
         ws.ecom.product.getJSONP('js/products.json');
+        closeButton.addEventListener("click", ws.ecom.product.toggleModal);
+        window.addEventListener("click", ws.ecom.product.closeModalOnWindowClick);
     }
 
 }
