@@ -4,9 +4,10 @@ if (typeof ws === "undefined" || !ws) {
 
 ws.ecom = ws.ecom || {};
 
-var viewportModal = document.querySelector(".viewport-modal"),
-    thumbnail = viewportModal.querySelector(".product-images .thumbnails"),
-    closeButton = viewportModal.querySelector(".close-icon");
+var isCatPage = (document.body.id == 'categoryPage') ? true : false,
+    viewportModal = document.querySelector(".viewport-modal"),
+    thumbnail = document.querySelector(".product-images .thumbnails"),
+    closeButton = document.querySelector(".close-icon");
 
 
 ws.ecom.product = {
@@ -30,38 +31,71 @@ ws.ecom.product = {
     },
 
     callback: function(data) {
-        var productRow = document.querySelector(".container .row .main-col .row"),
-            productComponent = productRow.querySelector(".category-grid"),
-            products = data.groups;
+        var productData = data.groups;
 
-        for (i = 0; i < products.length; i++) {
-            var newComponent = productComponent.cloneNode(true),
-                productId = products[i].id,
-                productImages = products[i].images,
-                quicklook = newComponent.querySelector(".quicklook");
+        if (isCatPage) {
+            var mainRow = document.querySelector(".container .main-col .row"),
+                productComponent = mainRow.querySelector(".category-grid");
 
-            newComponent.querySelector(".category-image").style.backgroundImage = "url(" + productImages[0] + ")";
-            quicklook.setAttribute('id', productId);
-            quicklook.setAttribute('data-images', productImages);
-            newComponent.querySelector(".desc").innerText = products[i].name;
-            if (products[i].priceRange) {
-                if (products[i].priceRange.selling) {
-                    if (products[i].priceRange.selling.high) {
-                        newComponent.querySelector(".high").innerText = '$' + products[i].priceRange.selling.high;
-                    }
-                    if (products[i].priceRange.selling.low) {
-                        newComponent.querySelector(".low").innerText = '$' + products[i].priceRange.selling.low + ' - ';
-                    }
-                }
-            } else {
-                this.removeElementsByClass(newComponent, 'low');
-                newComponent.querySelector(".high").innerText = '$' + products[i].price.selling;
+            for (i = 0; i < productData.length; i++) {
+                var newComponent = productComponent.cloneNode(true),
+                    catImg = newComponent.querySelector(".main-image"),
+                    productDetails = newComponent.querySelector(".product-details"),
+                    productId = productData[i].id,
+                    productImages = productData[i].images,
+                    productName = productData[i].name,
+                    quicklook = newComponent.querySelector(".quicklook");
+
+                ws.ecom.product.productContent(productDetails, catImg, productId, productName, productImages);
+                quicklook.setAttribute('data-images', productImages);
+                ws.ecom.product.pricing(newComponent, productData[i]);
+                mainRow.appendChild(newComponent);
+                ws.ecom.product.quicklook(newComponent, productImages);
             }
-            productRow.appendChild(newComponent);
-            ws.ecom.product.quicklook(newComponent, productImages);
+            mainRow.removeChild(mainRow.children[0]);
+        } else {
+            var productComponent = document.querySelector("main.row");
 
+            var productImages = productComponent.querySelector('.product-images'),
+                productDetails = document.querySelector(".product-details"),
+                mainImage = productImages.querySelector(".main-image"),
+                productId = window.location.hash.substr(1),
+                filteredProductsData = productData.filter(function(prod) {
+                    return prod.id == productId;
+                })[0],
+                productName = filteredProductsData.name,
+                productImagesData = filteredProductsData.images;
+
+            //productImages.querySelector('.main-image').style.backgroundImage = "url(" + productImagesData[0] + ")";
+            ws.ecom.product.thumbnails(productImagesData);
+            ws.ecom.product.productContent(productDetails, mainImage, productId, productName, productImagesData);
+            //productDetails.querySelector(".desc").innerText = filteredProductsData.name;
+            ws.ecom.product.pricing(productDetails, filteredProductsData);
         }
-        productRow.removeChild(productRow.querySelector(".category-grid"));
+
+    },
+
+    productContent: function(productDetails, mainImage, productId, productName, productImages) {
+        mainImage.style.backgroundImage = "url(" + productImages[0] + ")";
+        mainImage.setAttribute('data-product-id', productId);
+        productDetails.querySelector(".desc").innerText = productName;
+    },
+
+    pricing: function(component, productData) {
+        if (productData.priceRange) {
+            if (productData.priceRange.selling) {
+                if (productData.priceRange.selling.high) {
+                    component.querySelector(".high").innerText = '$' + productData.priceRange.selling.high;
+                }
+                if (productData.priceRange.selling.low) {
+                    component.querySelector(".low").innerText = '$' + productData.priceRange.selling.low + ' - ';
+                }
+            }
+        } else {
+            this.removeElementsByClass(component, 'low');
+            component.querySelector(".high").innerText = '$' + productData.price.selling;
+        }
+
     },
 
     quicklook: function(component, images) {
@@ -72,13 +106,9 @@ ws.ecom.product = {
             while (thumbnail.childNodes.length > 1) {
                 thumbnail.removeChild(thumbnail.lastChild);
             }
-            viewportModal.querySelector('.main-image').style.backgroundImage = "url(" + images[0] + ")";
+            viewportModal.querySelector('.carousel.main-image').style.backgroundImage = "url(" + images[0] + ")";
 
-            for (j = 0; j < images.length; j++) {
-                var li = document.createElement('li');
-                li.style.backgroundImage = "url(" + images[j] + ")";
-                thumbnail.appendChild(li);
-            }
+            ws.ecom.product.thumbnails(images);
             ws.ecom.product.slideshow();
             ws.ecom.product.toggleModal();
         });
@@ -90,10 +120,18 @@ ws.ecom.product = {
             thumbnails[k].addEventListener('click', function(e) {
                 var elem = e.target || e.srcElement;
                 var bgImg = elem.getAttribute('style');
-                viewportModal.querySelector('.main-image').style = bgImg;
+                viewportModal.querySelector('.carousel.main-image').style = bgImg;
             })
         }
 
+    },
+
+    thumbnails: function(images) {
+        for (j = 0; j < images.length; j++) {
+            var li = document.createElement('li');
+            li.style.backgroundImage = "url(" + images[j] + ")";
+            thumbnail.appendChild(li);
+        }
     },
 
     toggleModal: function() {
@@ -101,7 +139,6 @@ ws.ecom.product = {
     },
 
     closeModalOnWindowClick: function(e) {
-        var viewportModal = document.querySelector(".viewport-modal");
         if (e.target === viewportModal) {
             ws.ecom.product.toggleModal();
         }
@@ -109,8 +146,10 @@ ws.ecom.product = {
 
     init: function() {
         ws.ecom.product.getJSONP('js/products.json');
-        closeButton.addEventListener("click", ws.ecom.product.toggleModal);
-        window.addEventListener("click", ws.ecom.product.closeModalOnWindowClick);
+        if (isCatPage) {
+            closeButton.addEventListener("click", ws.ecom.product.toggleModal);
+            window.addEventListener("click", ws.ecom.product.closeModalOnWindowClick);
+        }
     }
 
 }

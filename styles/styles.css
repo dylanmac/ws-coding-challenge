@@ -23,12 +23,13 @@ footer {
 .category-grid {
     position: relative;
 }
-.category-image {
+.main-image {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 220px;
     width: 220px;
+    transition: background-image 0.5s ease-in-out;
 }
 .quicklook {
     color: #006167;
@@ -54,7 +55,7 @@ footer {
     margin: 0 0 10px;
     width: auto;
 }
-.quicklook-modal .thumbnails,
+.thumbnails,
 .pricing {
     list-style-type: none;
     padding-left: 0;
@@ -107,26 +108,31 @@ footer {
 .quicklook-modal .close-icon:hover {
     background-color: darkgray;
 }
-.quicklook-modal .main-image {
+.quicklook-modal .carousel.main-image {
     height: 340px;
     width: 340px;
-    transition: background-image 0.5s ease-in-out;
 }
-.quicklook-modal .thumbnails {
+#productPage .main-image {
+    height: 500px;
+    width: 500px;
+}
+.thumbnails {
     display: block;
     height: 100px;
     margin: 10px 0 0;
     overflow-x: auto;
+    overflow-y: hidden;
     white-space: nowrap;
 }
-.quicklook-modal .thumbnails li {
+.thumbnails li {
     background-size: cover;
+    cursor: pointer;
     display: inline-block;
     height: 80px;
     margin-right: 5px;
     width: 80px;
 }
-.quicklook-modal .thumbnails li:last-child {
+.thumbnails li:last-child {
     margin-right: 0;
 }
 /*****
