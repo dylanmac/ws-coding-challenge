@@ -106,7 +106,7 @@ ws.ecom.product = {
             while (thumbnail.childNodes.length > 1) {
                 thumbnail.removeChild(thumbnail.lastChild);
             }
-            viewportModal.querySelector('.carousel.main-image').style.backgroundImage = "url(" + images[0] + ")";
+            viewportModal.querySelector('.slideshow.main-image').style.backgroundImage = "url(" + images[0] + ")";
 
             ws.ecom.product.thumbnails(images);
             ws.ecom.product.slideshow(viewportModal);
@@ -120,7 +120,7 @@ ws.ecom.product = {
             thumbnails[k].addEventListener('click', function(e) {
                 var elem = e.target || e.srcElement;
                 var bgImg = elem.getAttribute('style');
-                targetElem.querySelector('.carousel.main-image').style = bgImg;
+                targetElem.querySelector('.slideshow.main-image').style = bgImg;
             })
         }
 

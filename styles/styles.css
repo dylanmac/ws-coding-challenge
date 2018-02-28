@@ -121,7 +121,7 @@ p.desc {
 .quicklook-modal .close-icon:hover {
     background-color: darkgray;
 }
-.quicklook-modal .carousel.main-image {
+.quicklook-modal .slideshow.main-image {
     height: 340px;
     width: 340px;
 }
