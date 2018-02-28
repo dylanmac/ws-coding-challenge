@@ -20,6 +20,11 @@ footer {
     margin: 20px 0;
     text-indent: -2000px;
 }
+h3 {
+    font-size: 1.6em;
+    line-height: 1.8em;
+    margin-bottom: 20px;
+}
 .category-grid {
     position: relative;
 }
@@ -27,6 +32,8 @@ footer {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    border: none;
+    display: block;
     height: 220px;
     width: 220px;
     transition: background-image 0.5s ease-in-out;
@@ -43,7 +50,7 @@ footer {
     color: #866347;
     border-color: #866347;
 }
-.desc {
+p.desc {
     font-size: .9em;
     text-transform: none;
     line-height: 23px;
@@ -57,6 +64,7 @@ footer {
 }
 .thumbnails,
 .pricing {
+    display: block;
     list-style-type: none;
     padding-left: 0;
 }
@@ -65,6 +73,11 @@ footer {
     font-weight: bold;
     line-height: normal;
     display: inline-block;
+}
+#productPage .pricing li {
+    color: darkgray;
+    font-size: 1.2em;
+    font-weight: 500;
 }
 .viewport-modal {
     position: fixed;
@@ -134,6 +147,9 @@ footer {
 }
 .thumbnails li:last-child {
     margin-right: 0;
+}
+#productPage .product-details {
+    margin-left: 20px;
 }
 /*****
     Add animation (fade in the popup)

@@ -66,10 +66,9 @@ ws.ecom.product = {
                 productName = filteredProductsData.name,
                 productImagesData = filteredProductsData.images;
 
-            //productImages.querySelector('.main-image').style.backgroundImage = "url(" + productImagesData[0] + ")";
             ws.ecom.product.thumbnails(productImagesData);
+            ws.ecom.product.slideshow(productImages);
             ws.ecom.product.productContent(productDetails, mainImage, productId, productName, productImagesData);
-            //productDetails.querySelector(".desc").innerText = filteredProductsData.name;
             ws.ecom.product.pricing(productDetails, filteredProductsData);
         }
 
@@ -78,6 +77,7 @@ ws.ecom.product = {
     productContent: function(productDetails, mainImage, productId, productName, productImages) {
         mainImage.style.backgroundImage = "url(" + productImages[0] + ")";
         mainImage.setAttribute('data-product-id', productId);
+        mainImage.setAttribute('href', 'product.htm#' + productId);
         productDetails.querySelector(".desc").innerText = productName;
     },
 
@@ -109,18 +109,18 @@ ws.ecom.product = {
             viewportModal.querySelector('.carousel.main-image').style.backgroundImage = "url(" + images[0] + ")";
 
             ws.ecom.product.thumbnails(images);
-            ws.ecom.product.slideshow();
+            ws.ecom.product.slideshow(viewportModal);
             ws.ecom.product.toggleModal();
         });
     },
 
-    slideshow: function() {
+    slideshow: function(targetElem) {
         var thumbnails = thumbnail.querySelectorAll('li');
         for (k = 0; k < thumbnails.length; k++) {
             thumbnails[k].addEventListener('click', function(e) {
                 var elem = e.target || e.srcElement;
                 var bgImg = elem.getAttribute('style');
-                viewportModal.querySelector('.carousel.main-image').style = bgImg;
+                targetElem.querySelector('.carousel.main-image').style = bgImg;
             })
         }
 
@@ -132,6 +132,7 @@ ws.ecom.product = {
             li.style.backgroundImage = "url(" + images[j] + ")";
             thumbnail.appendChild(li);
         }
+        if (!isCatPage) thumbnail.removeChild(thumbnail.children[0]);
     },
 
     toggleModal: function() {
